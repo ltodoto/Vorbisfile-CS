@@ -86,9 +86,8 @@ public static class Vorbisfile
 		IntPtr datasource	// Refers to a void*
 	);
 
-	/* IntPtr refers to a long, ignoring Win64! */
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate IntPtr tell_func(
+	public delegate long tell_func(
 		IntPtr datasource	// Refers to a void*
 	);
 
@@ -101,11 +100,11 @@ public static class Vorbisfile
 	{
 		public int version;
 		public int channels;
-		public IntPtr rate;		// refers to a long, ignoring Win64!
-		public IntPtr bitrate_upper;	// refers to a long, ignoring Win64!
-		public IntPtr bitrate_nominal;	// refers to a long, ignoring Win64!
-		public IntPtr bitrate_lower;	// refers to a long, ignoring Win64!
-		public IntPtr bitrate_window;	// refers to a long, ignoring Win64!
+		public long rate;
+		public long bitrate_upper;
+		public long bitrate_nominal;
+		public long bitrate_lower;
+		public long bitrate_window;
 		public IntPtr codec_setup;	// Refers to a void*
 	}
 
@@ -205,9 +204,8 @@ public static class Vorbisfile
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 	public static extern double ov_time_total(IntPtr vf, int i);
 
-	/* IntPtr refers to a long, ignoring Win64! */
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
-	public static extern IntPtr ov_read(
+	public static extern long ov_read(
 		IntPtr vf,
 		byte[] buffer,
 		int length,
@@ -217,9 +215,8 @@ public static class Vorbisfile
 		out int current_section
 	);
 
-	/* IntPtr refers to a long, ignoring Win64! */
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
-	public static extern IntPtr ov_read(
+	public static extern long ov_read(
 		IntPtr vf,
 		IntPtr buffer,
 		int length,
