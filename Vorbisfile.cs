@@ -177,6 +177,7 @@ public static class Vorbisfile
 		int link
 	) {
 		IntPtr result = INTERNAL_ov_info(vf, link);
+		if (result == IntPtr.Zero) throw new InvalidOperationException("Specified bitstream does not exist or the file has been initialized improperly.");
 		vorbis_info info = (vorbis_info) Marshal.PtrToStructure(
 			result,
 			typeof(vorbis_info)
@@ -194,6 +195,7 @@ public static class Vorbisfile
 		int link
 	) {
 		IntPtr result = INTERNAL_ov_comment(vf, link);
+		if (result == IntPtr.Zero) throw new InvalidOperationException("Specified bitstream does not exist or the file has been initialized improperly.");
 		vorbis_comment comment = (vorbis_comment) Marshal.PtrToStructure(
 			result,
 			typeof(vorbis_comment)
@@ -203,6 +205,9 @@ public static class Vorbisfile
 
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 	public static extern double ov_time_total(IntPtr vf, int i);
+
+	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+	public static extern long ov_pcm_total(IntPtr vf, int i);
 
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 	public static extern long ov_read(
@@ -229,6 +234,15 @@ public static class Vorbisfile
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 	public static extern int ov_time_seek(IntPtr vf, double s);
 
+	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+	public static extern int ov_pcm_seek(IntPtr vf, long s);
+
+	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+	public static extern double ov_time_tell(IntPtr vf);
+
+	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+	public static extern long ov_pcm_tell(IntPtr vf);
+
 	[DllImport(nativeLibName, EntryPoint = "ov_clear", CallingConvention = CallingConvention.Cdecl)]
 	private static extern int INTERNAL_ov_clear(IntPtr vf);
 	public static int ov_clear(ref IntPtr vf)
@@ -238,6 +252,12 @@ public static class Vorbisfile
 		vf = IntPtr.Zero;
 		return result;
 	}
+
+	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+	public static extern IntPtr ov_streams(IntPtr vf);
+
+	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+	public static extern IntPtr ov_seekable(IntPtr vf);
 
 	#endregion
 
